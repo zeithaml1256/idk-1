@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+"""
+main.py: první projekt do IT gymnázia
+
+author: Jan Zeithaml
+email: 1256@student.itgymnazium.cz
+"""
+
+import string
+
 TEXTS = [
 '''Situated about 10 miles west of Kemmerer,
 Fossil Butte is a ruggedly impressive
@@ -34,7 +43,7 @@ passwords = {
         "liz": "pass123",
         }
 
-name = input("Usrername: ")
+name = input("Username: ")
 password = input("Password: ")
 
 if name not in passwords or passwords[name] != password:
@@ -45,7 +54,8 @@ print(f"Welcome {name}")
 
 try:
     prompt = f"Which text do you want to ananalyze [1-{len(TEXTS)}]? "
-    text_choice = int(input(prompt))
+    text_choice_string = input(prompt)
+    text_choice = int(text_choice_string)
 except ValueError:
     print(f"{text_choice_string} is not a number")
     exit(1)
@@ -65,6 +75,7 @@ acc = 0
 len_counts = {}
 biggest_len = 0
 for word in words:
+    word = word.translate(str.maketrans("", "", string.punctuation))
     if word.isupper(): caps_lock_count += 1
     if word.islower(): lowercase_count += 1
     if word[0].isupper() and word[1:].islower():
@@ -87,12 +98,12 @@ print(f"Number of caps locked words: {caps_lock_count}")
 print(f"Number of lowercase words: {lowercase_count}")
 print(f"Number of numbers: {number_count}")
 print(f"Sum of all numbers: {acc}")
-print("Amount of words by length:")
+print("--------------------------")
+print("LEN | OCCURENCES | NR.")
+print("--------------------------")
+max_width = max(len_counts.values())
 for i in range(1, biggest_len+1):
-    indent = 4*" "
-    if i in len_counts:
-        amount = len_counts[i]
-        bar = "*" * amount
-        print(f"{indent}{i} {bar}\t{amount}")
-    else:
-        print(f"{indent}{i}")
+    amount = len_counts.get(i, 0)
+    len_formatted = str(i).rjust(3)
+    bar = (amount * "*").ljust(max_width)
+    print(f"{len_formatted} | {bar} | {amount}")
